@@ -1,0 +1,8 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: blue;
+  height: 100vh; /*make the body container the full view height*/
+}
