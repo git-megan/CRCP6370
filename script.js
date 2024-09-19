@@ -1,3 +1,8 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI("my-api-key");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
 const sendButton = document.getElementById("send-button");
 sendButton.addEventListener("click", sendMessage);
 
@@ -8,30 +13,12 @@ async function sendMessage() {
   appendMessage("user", userInput);
 
   // call api for data based on the user's input
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer my-api-key",
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages: [
-        { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: userInput },
-      ],
-      max_tokens: 150,
-    }),
-  });
+  const result = await model.generateContent(userInput);
 
-  // get bot's reply from the data that was fetched, and display it
-  if (response.ok) {
-    const data = await response.json();
-    const botReply = data.choices[0].text.trim();
-    appendMessage("bot", botReply);
-  } else {
-    appendMessage("bot", "Error: Unable to fetch response from the server");
-  }
+  // get bot's reply from the result fetched
+
+  const botReply = result.response.text();
+  appendMessage("bot", botReply);
 
   // clear the input form so user can write something else
   document.getElementById("user-input").value = "";

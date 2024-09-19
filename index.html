@@ -12,6 +12,14 @@
       <input type="text" id="user-input" placeholder="Ask a question!" />
       <button id="send-button">Send</button>
     </div>
-    <script src="script.js"></script>
+    <!-- Import @google/generative-ai to use Gemini API-->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>
