@@ -3,6 +3,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: blue;
+  color: #ede8e2;
+  background-color: #1f1e1c;
+  font-family: "Playwrite DE Grund", cursive;
   height: 100vh; /*make the body container the full view height*/
+}
+
+#chat-container {
+  width: 500px;
+  max-width: 80%;
 }

@@ -1,23 +1,31 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI("my-api-key");
+const apiKey = "MY_KEY";
+
+const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const sendButton = document.getElementById("send-button");
 sendButton.addEventListener("click", sendMessage);
 
+let lastMessage = ""; // keep track of conversation history with last message reply from the bot
+
 async function sendMessage() {
   // get user input and display it
   const userInput = document.getElementById("user-input").value;
   if (userInput.trim() === "") return;
-  appendMessage("user", userInput);
 
-  // call api for data based on the user's input
-  const result = await model.generateContent(userInput);
+  // call api for data based on the prompt & the user's input
+  const prompt =
+    "This is was what you last told the user: " +
+    lastMessage +
+    "As a friendly storyteller, poet, and tarot reader, concisely reply to: "; // to customize the interaction
+  const result = await model.generateContent(prompt + userInput);
 
   // get bot's reply from the result fetched
 
   const botReply = result.response.text();
+  lastMessage = botReply;
   appendMessage("bot", botReply);
 
   // clear the input form so user can write something else
@@ -30,13 +38,5 @@ function appendMessage(sender, message) {
     console.error("Chat box element not found!");
     return;
   }
-
-  // create a new message div to put the new message into
-  const messageDiv = document.createElement("div");
-  messageDiv.classList.add("message", sender); // message div has a .message class and a .bot or .user class
-  messageDiv.textContent = message;
-
-  // add the message div to the chat box area
-  chatBox.appendChild(messageDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
+  chatBox.textContent = message;
 }
